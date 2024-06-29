@@ -1,18 +1,25 @@
 import { AddressOrPair, SubmittableExtrinsic } from '@polkadot/api/types';
 import { ISubmittableResult, Signer } from '@polkadot/types/types';
 
-import { TxStatusHandlers } from '@/models';
+import { NATIVE_ASSET_ID, TxStatusHandlers } from '@/models';
+import { numberToU8a } from '@polkadot/util';
 
 export const sendTx = async (
   tx: SubmittableExtrinsic<'promise', ISubmittableResult>,
   account: AddressOrPair,
   signer: Signer,
-  handlers: TxStatusHandlers
+  handlers: TxStatusHandlers,
+  feePaymentAsset: number = NATIVE_ASSET_ID
 ) => {
+  const options =
+    feePaymentAsset == NATIVE_ASSET_ID
+      ? { signer }
+      : { signer, assetId: numberToU8a(feePaymentAsset) };
+  console.log(options);
   try {
     const unsub = await tx.signAndSend(
       account,
-      { signer },
+      options,
       ({ status, events }) => {
         if (status.isReady) handlers.ready();
         else if (status.isInBlock) handlers.inBlock();

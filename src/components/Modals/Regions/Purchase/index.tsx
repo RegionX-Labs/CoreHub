@@ -13,7 +13,7 @@ import { ApiState } from '@/contexts/apis/types';
 import { useMarket } from '@/contexts/market';
 import { useRegions } from '@/contexts/regions';
 import { useToast } from '@/contexts/toast';
-import { Listing } from '@/models';
+import { Listing, RELAY_ASSET_ID } from '@/models';
 
 interface PurchaseModalProps {
   open: boolean;
@@ -86,6 +86,7 @@ export const PurchaseModal = ({
           toastError('Failed to purchase the region');
         },
         error: (e) => {
+          console.log(e);
           toastError(
             `Failed to purchase the region. Error: ${
               e.errorMessage === 'Error'
@@ -95,7 +96,8 @@ export const PurchaseModal = ({
           );
           setWorking(false);
         },
-      }
+      },
+      RELAY_ASSET_ID
     );
   };
 
@@ -113,6 +115,9 @@ export const PurchaseModal = ({
           pb: '1rem',
         }}
       >
+        <Button onClick={onClose} variant='outlined'>
+          Cancel
+        </Button>
         <LoadingButton
           onClick={() => purchaseRegion()}
           variant='contained'
@@ -120,9 +125,6 @@ export const PurchaseModal = ({
         >
           Purchase
         </LoadingButton>
-        <Button onClick={onClose} variant='outlined'>
-          Cancel
-        </Button>
       </DialogActions>
     </Dialog>
   );

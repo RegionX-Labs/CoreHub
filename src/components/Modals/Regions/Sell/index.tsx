@@ -22,7 +22,7 @@ import { ApiState } from '@/contexts/apis/types';
 import { useMarket } from '@/contexts/market';
 import { useRegions } from '@/contexts/regions';
 import { useToast } from '@/contexts/toast';
-import { RegionMetadata } from '@/models';
+import { RELAY_ASSET_ID, RegionMetadata } from '@/models';
 
 interface SellModalProps {
   open: boolean;
@@ -119,7 +119,8 @@ export const SellModal = ({
           );
           setWorking(false);
         },
-      }
+      },
+      RELAY_ASSET_ID
     );
   };
 

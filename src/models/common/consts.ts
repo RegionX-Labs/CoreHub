@@ -25,3 +25,6 @@ export const SAFE_XCM_VERSION = 3;
 export const BROKER_PALLET_ID = 50;
 
 export const POOLING_TASK_ID = 0;
+
+export const NATIVE_ASSET_ID = 0;
+export const RELAY_ASSET_ID = 1;

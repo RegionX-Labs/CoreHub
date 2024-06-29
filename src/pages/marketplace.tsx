@@ -29,7 +29,12 @@ import { useRegionXApi } from '@/contexts/apis/RegionXApi';
 import { ApiState } from '@/contexts/apis/types';
 import { useMarket } from '@/contexts/market';
 import { useToast } from '@/contexts/toast';
-import { ContextStatus, Listing, MarketFilterOptions } from '@/models';
+import {
+  ContextStatus,
+  Listing,
+  MarketFilterOptions,
+  RELAY_ASSET_ID,
+} from '@/models';
 
 // eslint-disable-next-line no-unused-vars
 enum SortOption {
@@ -130,7 +135,8 @@ const Marketplace = () => {
           );
           setWorking(false);
         },
-      }
+      },
+      RELAY_ASSET_ID
     );
   };
 

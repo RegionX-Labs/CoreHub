@@ -94,7 +94,8 @@ export const connect = (
   dispatch: any,
   newSocket: boolean,
   types?: any,
-  customRpc?: any
+  customRpc?: any,
+  signedExtensions?: any
 ) => {
   const { apiState, jsonrpc } = state;
 
@@ -106,6 +107,7 @@ export const connect = (
     provider,
     rpc: { ...jsonrpc, ...customRpc },
     types,
+    signedExtensions,
   });
   dispatch({ type: 'CONNECT_INIT', socket });
 

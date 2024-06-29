@@ -78,6 +78,16 @@ const customRpc = {
   },
 };
 
+const signedExtensions = {
+  ChargeAssetTxPayment: {
+    extrinsic: {
+      tip: 'Compact<Balance>',
+      assetId: 'Option<AssetId>',
+    },
+    payload: {},
+  },
+};
+
 const defaultValue = {
   state: { ...initialState },
   disconnectRegionX: (): void => {
@@ -107,7 +117,15 @@ const RegionXApiContextProvider = (props: any) => {
     //
     // For this reason we don't have different urls based on the network. However, this
     // should be updated once this is in production.
-    connect(state, WS_REGIONX_COCOS_CHAIN, dispatch, false, types, customRpc);
+    connect(
+      state,
+      WS_REGIONX_COCOS_CHAIN,
+      dispatch,
+      false,
+      types,
+      customRpc,
+      signedExtensions
+    );
   }, [network, state]);
 
   useEffect(() => {

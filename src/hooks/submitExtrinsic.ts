@@ -4,7 +4,8 @@ import { useConfirm } from 'material-ui-confirm';
 
 import { getBalanceString, sendTx } from '@/utils/functions';
 
-import { TxStatusHandlers } from '@/models';
+import { NATIVE_ASSET_ID, TxStatusHandlers } from '@/models';
+import { numberToU8a } from '@polkadot/util';
 
 export const useSubmitExtrinsic = () => {
   const confirm = useConfirm();
@@ -15,9 +16,14 @@ export const useSubmitExtrinsic = () => {
     tx: SubmittableExtrinsic<'promise', ISubmittableResult>,
     account: AddressOrPair,
     signer: Signer,
-    handlers: TxStatusHandlers
+    handlers: TxStatusHandlers,
+    feePaymentAsset: number = NATIVE_ASSET_ID
   ) => {
-    const info = await tx.paymentInfo(account.toString());
+    console.log(feePaymentAsset);
+    const info = await tx.paymentInfo(
+      account.toString(),
+      feePaymentAsset == NATIVE_ASSET_ID ? {} : { assetId: numberToU8a(feePaymentAsset) }
+    );
     const { partialFee } = info.toPrimitive() as any;
     confirm({
       description: `Estimated gas fee: ${getBalanceString(
@@ -25,7 +31,7 @@ export const useSubmitExtrinsic = () => {
         decimals,
         symbol
       )}`,
-    }).then(() => sendTx(tx, account, signer, handlers));
+    }).then(() => sendTx(tx, account, signer, handlers, feePaymentAsset));
   };
 
   return { submitExtrinsicWithFeeInfo };

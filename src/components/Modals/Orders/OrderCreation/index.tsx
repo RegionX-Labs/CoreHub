@@ -33,6 +33,7 @@ import { useSaleInfo } from '@/contexts/sales';
 import { useToast } from '@/contexts/toast';
 
 import styles from './index.module.scss';
+import { RELAY_ASSET_ID } from '@/models';
 
 interface OrderCreationModalProps {
   open: boolean;
@@ -138,7 +139,8 @@ export const OrderCreationModal = ({
             toastError(`Failed to create a new order ${e}`);
             setWorking(false);
           },
-        }
+        },
+        RELAY_ASSET_ID
       );
     } catch (e: any) {
       toastError(`Failed to create a new order. ${e.toString()}`);

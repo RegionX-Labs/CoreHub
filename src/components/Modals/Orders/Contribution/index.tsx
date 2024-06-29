@@ -20,7 +20,7 @@ import { useRegionXApi, useRelayApi } from '@/contexts/apis';
 import { ApiState } from '@/contexts/apis/types';
 import { useOrders } from '@/contexts/orders';
 import { useToast } from '@/contexts/toast';
-import { Order } from '@/models';
+import { Order, RELAY_ASSET_ID } from '@/models';
 
 import styles from './index.module.scss';
 
@@ -99,7 +99,8 @@ export const ContributionModal = ({
             toastError(`Failed to contribute to an order ${e}`);
             setWorking(false);
           },
-        }
+        },
+        RELAY_ASSET_ID
       );
     } catch (e: any) {
       setWorking(false);
