@@ -21,3 +21,11 @@ export type Order = OnChainOrder & {
   totalContribution: number;
   contribution: number;
 };
+
+export type OrderItem = {
+  orderId: number;
+  extrinsicId: string;
+  account: string;
+  reward: number;
+  timestamp: Date;
+};

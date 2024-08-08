@@ -4,6 +4,7 @@ import ExploreIcon from '@mui/icons-material/Explore';
 import HistoryIcon from '@mui/icons-material/History';
 import HomeIcon from '@mui/icons-material/Home';
 import ListOutlinedIcon from '@mui/icons-material/ListOutlined';
+import RepeatOutlinedIcon from '@mui/icons-material/RepeatOutlined';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import SwapHorizOutlinedIcon from '@mui/icons-material/SwapHorizOutlined';
 import { Box, Stack, Typography, useTheme } from '@mui/material';
@@ -151,6 +152,12 @@ export const Sidebar = () => {
         route: '/orders',
         enabled: enableRegionX,
         icon: <ListOutlinedIcon />,
+      },
+      {
+        label: 'Order Processor',
+        route: '/processor',
+        enabled: enableRegionX,
+        icon: <RepeatOutlinedIcon />,
       },
     ],
   };

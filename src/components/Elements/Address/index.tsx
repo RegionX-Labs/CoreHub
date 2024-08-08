@@ -10,6 +10,7 @@ interface AddressProps {
   isShort?: boolean;
   isCopy?: boolean;
   size?: number;
+  center?: boolean;
 }
 
 export const Address = ({
@@ -17,6 +18,7 @@ export const Address = ({
   isShort,
   isCopy,
   size = 32,
+  center,
 }: AddressProps) => {
   const { toastInfo } = useToast();
 
@@ -31,7 +33,13 @@ export const Address = ({
   };
 
   return (
-    <Stack direction='row' gap='0.5rem' alignItems='center' width='fit-content'>
+    <Stack
+      direction='row'
+      gap='0.5rem'
+      alignItems='center'
+      width='fit-content'
+      margin={center ? 'auto' : 0}
+    >
       <IconButton onClick={onCopy}>
         <Identicon value={value} theme='polkadot' size={size} />
       </IconButton>
