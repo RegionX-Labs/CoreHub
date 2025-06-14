@@ -9,6 +9,7 @@ import { Address, NetworkSelector, TxHistoryModal } from '@/components';
 import { useAccounts } from '@/contexts/account';
 
 import styles from './index.module.scss';
+import { WalletModal } from '@/components/Wallet';
 
 export const Header = () => {
   const theme = useTheme();
@@ -20,6 +21,8 @@ export const Header = () => {
   } = useAccounts();
 
   const [txHistoryModalOpen, openTxHistoryModal] = useState(false);
+
+  const [walletModalOpen, openWalletModal] = useState(false);
 
   const onDisconnect = () => {
     disconnectWallet();
@@ -87,7 +90,7 @@ export const Header = () => {
               </Box>
             </Box>
           ) : (
-            <Button data-cy='connect-wallet' onClick={() => connectWallet()}>
+            <Button data-cy='connect-wallet' onClick={() => openWalletModal(true)}>
               Connect Wallet
             </Button>
           )}
@@ -102,6 +105,12 @@ export const Header = () => {
       ) : (
         <></>
       )}
+      {walletModalOpen &&
+        <WalletModal
+          open={walletModalOpen}
+          onClose={() => openWalletModal(false)}
+        />
+      }
     </>
   );
 };

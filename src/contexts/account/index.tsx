@@ -1,13 +1,21 @@
 import type { Signer } from '@polkadot/api/types';
-import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
+import { InjectedAccount, InjectedAccountWithMeta, InjectedAccounts, InjectedExtension } from '@polkadot/extension-inject/types';
 import React, { createContext, useContext, useEffect, useReducer } from 'react';
 
 import { isValidAddress } from '@/utils/functions';
 
 import { APP_NAME } from '@/consts';
+import useInitMimir from '@/components/Mimir/hook';
 
 const LOCAL_STORAGE_ACCOUNTS = 'accounts';
 const LOCAL_STORAGE_ACTIVE_ACCOUNT = 'active-account';
+
+export enum WalletTypes {
+  TALISMAN = 'talisman',
+  POLKADOTJS = 'polkadot-js',
+  SUBWALLET = 'subwallet',
+  MIMIR = 'mimir',
+}
 
 export enum KeyringState {
   // eslint-disable-next-line no-unused-vars
@@ -67,7 +75,7 @@ const reducer = (state: State, action: any) => {
 interface AccountData {
   state: State;
   setActiveAccount: (_acct: InjectedAccountWithMeta | null) => void;
-  connectWallet: () => void;
+  connectWallet: (injectedExtension: InjectedExtension) => void;
   disconnectWallet: () => void;
 }
 
@@ -88,19 +96,19 @@ const AccountDataContext = createContext<AccountData>(defaultAccountData);
 
 const AccountProvider = ({ children }: Props) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  useInitMimir();
 
   const setActiveAccount = (acct: InjectedAccountWithMeta | null) => {
     localStorage.setItem(LOCAL_STORAGE_ACTIVE_ACCOUNT, acct?.address || '');
     dispatch({ type: 'SET_ACTIVE_ACCOUNT', payload: acct });
   };
 
-  const connectWallet = () => {
+  const connectWallet = (injectedExtension: InjectedExtension) => {
     const asyncLoadAccounts = async () => {
       try {
         dispatch({ type: 'LOAD_KEYRING' });
-        const extensionDapp = await import('@polkadot/extension-dapp');
-        const { web3Accounts } = extensionDapp;
-        const accounts: InjectedAccountWithMeta[] = await web3Accounts();
+        const accounts: InjectedAccounts = injectedExtension.accounts;
+        console.log(injectedExtension);
         dispatch({ type: 'KEYRING_READY' });
         dispatch({ type: 'SET_ACCOUNTS', payload: accounts });
       } catch (e) {
@@ -138,6 +146,7 @@ const AccountProvider = ({ children }: Props) => {
       try {
         const { web3FromSource } = await import('@polkadot/extension-dapp');
         const injector = await web3FromSource(activeAccount.meta.source);
+        console.log(activeAccount.meta.source);
         dispatch({ type: 'SET_ACTIVE_SIGNER', payload: injector.signer });
       } catch (e) {
         /** */
